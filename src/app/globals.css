@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-inter: "Inter", sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #0A2540;
+  color: #E6EDF5;
+  font-family: var(--font-inter);
+}
