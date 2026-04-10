@@ -200,10 +200,6 @@ function CTAFooter() {
             <a href="mailto:zach@extractsignal.com" className="hover:text-[#9FB3C8] transition-colors">
               zach@extractsignal.com
             </a>
-            {" · "}
-            <a href="tel:+13104963376" className="hover:text-[#9FB3C8] transition-colors">
-              310.496.3376
-            </a>
           </p>
         </div>
         <a
