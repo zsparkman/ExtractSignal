@@ -21,12 +21,12 @@ function Logo() {
 function Nav() {
   return (
     <nav className="border-b border-[#1F3B5B] bg-[#0A2540]">
-      <div className="mx-auto max-w-[1200px] px-6 md:px-12 flex items-center justify-between h-[52px]">
+      <div className="mx-auto max-w-[1200px] px-[24px] md:px-[48px] flex items-center justify-between h-[56px]">
         <Logo />
         <div className="flex items-center gap-7">
-          <a href="#methodology" className="text-[12px] text-[#9FB3C8] hover:text-[#E6EDF5] transition-colors">Methodology</a>
+          <a href="#methodology" className="text-[12px] text-[#9FB3C8] hover:text-[#E6EDF5] transition-colors">How it works</a>
           <a href="#verticals" className="text-[12px] text-[#9FB3C8] hover:text-[#E6EDF5] transition-colors">Verticals</a>
-          <a href="#contact" className="text-[12px] text-[#9FB3C8] hover:text-[#E6EDF5] transition-colors">Contact</a>
+          <a href="#contact" className="text-[12px] text-[#9FB3C8] hover:text-[#E6EDF5] transition-colors">Results</a>
           <a
             href="#contact"
             className="bg-[#2F80FF] hover:bg-[#4DA3FF] transition-colors text-white text-[12px] font-semibold px-5 py-2 rounded-[3px]"
@@ -42,7 +42,7 @@ function Nav() {
 function Hero() {
   return (
     <section className="bg-[#0A2540] border-b border-[#1F3B5B]">
-      <div className="mx-auto max-w-[1200px] px-[24px] py-[24px] md:px-[48px] md:py-[80px]">
+      <div className="mx-auto max-w-[1200px] px-[24px] py-[48px] md:px-[48px] md:py-[80px]">
         <div className="max-w-[560px]">
           <span className="inline-block bg-[#113355] border border-[#1F3B5B] rounded-[2px] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[rgba(159,179,200,0.75)] mb-[24px]">
             Growth Marketing
@@ -54,7 +54,7 @@ function Hero() {
           <p className="text-[12px] text-[rgba(159,179,200,0.75)] opacity-70 mb-[12px]">
             Signal extraction for structured settlement and legal data.
           </p>
-          <p className="text-[15px] font-normal leading-[1.6] text-[#9FB3C8] mb-[24px] max-w-[480px]">
+          <p className="text-[15px] font-normal leading-[1.6] text-[#9FB3C8] max-w-[480px]">
             We extract and qualify high-intent prospects at the source. Delivering structured opportunities to operators who convert them.
           </p>
           <div className="flex items-center gap-[12px] mt-[32px]">
@@ -81,7 +81,7 @@ function Metrics() {
   return (
     <section className="border-b border-[#1F3B5B] bg-[#0A2540]">
       <div className="mx-auto max-w-[1200px] px-[24px] md:px-[48px]">
-        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-[#1F3B5B]">
+        <div className="grid grid-cols-1 md:grid-cols-3">
           <div className="py-[32px] pr-0 md:pr-[48px]">
             <div className="text-[28px] font-semibold tracking-[-0.02em] text-[#E6EDF5] mb-1">
               94%
@@ -120,9 +120,9 @@ function Pipeline() {
   ];
   return (
     <section id="methodology" className="bg-[#0A2540] border-b border-[#1F3B5B]">
-      <div className="mx-auto max-w-[1200px]">
-        <div className="flex flex-col md:flex-row md:items-baseline md:justify-between px-[24px] pt-[24px] pb-[24px] md:px-[48px] md:pt-[48px] md:pb-[32px] gap-[12px]">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[rgba(159,179,200,0.75)]">
+      <div className="mx-auto max-w-[1200px] px-[24px] md:px-[48px]">
+        <div className="pt-[48px] pb-[32px]">
+          <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-[rgba(159,179,200,0.75)] mb-[12px]">
             How it works
           </span>
           <h2 className="text-[22px] font-bold tracking-[-0.015em] text-[#E6EDF5]">
@@ -133,7 +133,7 @@ function Pipeline() {
           {steps.map((step, i) => (
             <div
               key={step.num}
-              className={`p-[24px] md:p-[32px] ${i > 0 ? "md:border-l border-t md:border-t-0 border-[#1F3B5B]" : ""}`}
+              className={`py-[32px] ${i === 0 ? "pr-0 md:pr-[32px]" : i === 1 ? "px-0 md:px-[32px]" : "pl-0 md:pl-[32px]"} ${i > 0 ? "md:border-l border-t md:border-t-0 border-[#1F3B5B]" : ""}`}
             >
               <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2F80FF] mb-[16px]">
                 {step.num}
@@ -161,13 +161,16 @@ function Verticals() {
   ];
   return (
     <section id="verticals" className="bg-[#113355] border-b border-[#1F3B5B]">
-      <div className="mx-auto max-w-[1200px]">
-        <div className="px-[24px] pt-[24px] pb-[24px] md:px-[48px] md:pt-[48px] md:pb-[32px]">
+      <div className="mx-auto max-w-[1200px] px-[24px] md:px-[48px]">
+        <div className="pt-[48px] pb-[32px]">
+          <span className="block text-[10px] font-semibold uppercase tracking-[0.14em] text-[rgba(159,179,200,0.75)] mb-[12px]">
+            Verticals
+          </span>
           <h2 className="text-[22px] font-bold tracking-[-0.015em] text-[#E6EDF5]">
             Built for <span className="text-[#2F80FF]">high-stakes</span> decision systems.
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1F3B5B]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1F3B5B] mb-[48px]">
           {items.map((item) => (
             <div key={item.title} className="bg-[#0A2540] p-[24px] flex items-center justify-between">
               <div>
@@ -188,7 +191,7 @@ function Verticals() {
 function CTAFooter() {
   return (
     <footer id="contact" className="bg-[#0A2540]">
-      <div className="mx-auto max-w-[1200px] px-[24px] py-[24px] md:px-[48px] md:py-[64px] flex flex-col md:flex-row md:items-center md:justify-between gap-[48px]">
+      <div className="mx-auto max-w-[1200px] px-[24px] py-[48px] md:px-[48px] md:py-[64px] flex flex-col md:flex-row md:items-center md:justify-between gap-[48px]">
         <div className="flex flex-col gap-[8px]">
           <h2 className="text-[22px] font-bold tracking-[-0.015em] text-[#E6EDF5]">
             Ready to extract the <span className="text-[#2F80FF]">right signal?</span>
