@@ -21,7 +21,7 @@ function Logo() {
 function Nav() {
   return (
     <nav className="border-b border-[#1F3B5B] bg-[#0A2540]">
-      <div className="mx-auto max-w-[1080px] px-6 flex items-center justify-between h-[52px]">
+      <div className="mx-auto max-w-[1200px] px-6 md:px-12 flex items-center justify-between h-[52px]">
         <Logo />
         <div className="flex items-center gap-7">
           <a href="#methodology" className="text-[12px] text-[#9FB3C8] hover:text-[#E6EDF5] transition-colors">Methodology</a>
@@ -42,22 +42,22 @@ function Nav() {
 function Hero() {
   return (
     <section className="bg-[#0A2540] border-b border-[#1F3B5B]">
-      <div className="mx-auto max-w-[1080px] px-6 py-20">
+      <div className="mx-auto max-w-[1200px] px-[24px] py-[24px] md:px-[48px] md:py-[80px]">
         <div className="max-w-[560px]">
-          <span className="inline-block bg-[#113355] border border-[#1F3B5B] rounded-[2px] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[rgba(159,179,200,0.75)] mb-5">
+          <span className="inline-block bg-[#113355] border border-[#1F3B5B] rounded-[2px] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-[rgba(159,179,200,0.75)] mb-[24px]">
             Growth Marketing
           </span>
-          <h1 className="text-[42px] font-normal tracking-[-0.025em] leading-[1.1] mb-3">
+          <h1 className="text-[42px] font-normal tracking-[-0.025em] leading-[1.1] mb-[16px]">
             <span className="text-[#E6EDF5]">Signal from </span>
             <span className="text-[#2F80FF] font-semibold">noise.</span>
           </h1>
-          <p className="text-[12px] text-[rgba(159,179,200,0.75)] opacity-70 mb-5">
+          <p className="text-[12px] text-[rgba(159,179,200,0.75)] opacity-70 mb-[12px]">
             Signal extraction for structured settlement and legal data.
           </p>
-          <p className="text-[15px] font-normal leading-[1.6] text-[#9FB3C8] mb-8 max-w-[480px]">
+          <p className="text-[15px] font-normal leading-[1.6] text-[#9FB3C8] mb-[24px] max-w-[480px]">
             We extract and qualify high-intent prospects at the source. Delivering structured opportunities to operators who convert them.
           </p>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-[12px] mt-[32px]">
             <a
               href="#contact"
               className="bg-[#2F80FF] hover:bg-[#4DA3FF] transition-colors text-white text-[13px] font-semibold px-[26px] py-[12px] rounded-[3px]"
@@ -78,28 +78,34 @@ function Hero() {
 }
 
 function Metrics() {
-  const stats = [
-    { value: "94%", label: "Qualified lead rate" },
-    { value: "3.2×", label: "Average client ROI" },
-    { value: "48hr", label: "Median delivery time" },
-  ];
   return (
     <section className="border-b border-[#1F3B5B] bg-[#0A2540]">
-      <div className="mx-auto max-w-[1080px] px-6">
+      <div className="mx-auto max-w-[1200px] px-[24px] md:px-[48px]">
         <div className="grid grid-cols-1 md:grid-cols-3 border-t border-[#1F3B5B]">
-          {stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className={`py-8 px-6 ${i > 0 ? "md:border-l border-t md:border-t-0 border-[#1F3B5B]" : ""}`}
-            >
-              <div className="text-[28px] font-semibold tracking-[-0.02em] text-[#E6EDF5] mb-1">
-                {stat.value}
-              </div>
-              <div className="text-[12px] text-[rgba(159,179,200,0.75)]">
-                {stat.label}
-              </div>
+          <div className="py-[32px] pr-0 md:pr-[48px]">
+            <div className="text-[28px] font-semibold tracking-[-0.02em] text-[#E6EDF5] mb-1">
+              94%
             </div>
-          ))}
+            <div className="text-[12px] text-[rgba(159,179,200,0.75)]">
+              Qualified lead rate
+            </div>
+          </div>
+          <div className="py-[32px] px-0 md:px-[48px] border-t md:border-t-0 md:border-l border-[#1F3B5B]">
+            <div className="text-[28px] font-semibold tracking-[-0.02em] text-[#E6EDF5] mb-1">
+              3.2×
+            </div>
+            <div className="text-[12px] text-[rgba(159,179,200,0.75)]">
+              Average client ROI
+            </div>
+          </div>
+          <div className="py-[32px] pl-0 md:pl-[48px] border-t md:border-t-0 md:border-l border-[#1F3B5B]">
+            <div className="text-[28px] font-semibold tracking-[-0.02em] text-[#E6EDF5] mb-1">
+              48hr
+            </div>
+            <div className="text-[12px] text-[rgba(159,179,200,0.75)]">
+              Median delivery time
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -114,8 +120,8 @@ function Pipeline() {
   ];
   return (
     <section id="methodology" className="bg-[#0A2540] border-b border-[#1F3B5B]">
-      <div className="mx-auto max-w-[1080px] px-6 py-16">
-        <div className="flex flex-col md:flex-row md:items-baseline md:justify-between mb-10 gap-2">
+      <div className="mx-auto max-w-[1200px]">
+        <div className="flex flex-col md:flex-row md:items-baseline md:justify-between px-[24px] pt-[24px] pb-[24px] md:px-[48px] md:pt-[48px] md:pb-[32px] gap-[12px]">
           <span className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[rgba(159,179,200,0.75)]">
             How it works
           </span>
@@ -127,12 +133,12 @@ function Pipeline() {
           {steps.map((step, i) => (
             <div
               key={step.num}
-              className={`py-8 pr-8 ${i > 0 ? "md:border-l md:pl-8 border-t md:border-t-0 border-[#1F3B5B]" : ""}`}
+              className={`p-[24px] md:p-[32px] ${i > 0 ? "md:border-l border-t md:border-t-0 border-[#1F3B5B]" : ""}`}
             >
-              <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2F80FF] mb-3">
+              <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-[#2F80FF] mb-[16px]">
                 {step.num}
               </div>
-              <div className="text-[14px] font-bold text-white mb-2">
+              <div className="text-[14px] font-bold text-white mb-[8px]">
                 {step.title}
               </div>
               <p className="text-[12px] text-[rgba(159,179,200,0.75)] opacity-80 leading-[1.55]">
@@ -148,23 +154,25 @@ function Pipeline() {
 
 function Verticals() {
   const items = [
-    { title: "Structured settlements", tag: "CORE", tagStyle: "bg-[#2F80FF] text-white" },
-    { title: "Legal services", tag: "ACTIVE", tagStyle: "border border-[#2F80FF] text-[#2F80FF]" },
-    { title: "Financial services", tag: "ACTIVE", tagStyle: "border border-[#2F80FF] text-[#2F80FF]" },
-    { title: "Healthcare", tag: "SOON", tagStyle: "border border-[rgba(47,128,255,0.35)] text-[rgba(159,179,200,0.5)]" },
+    { title: "Structured settlements", subtitle: "Plaintiff & claimant targeting", tag: "CORE", tagStyle: "bg-[#2F80FF] text-white" },
+    { title: "Legal services", subtitle: "Mass tort & personal injury", tag: "ACTIVE", tagStyle: "border border-[#2F80FF] text-[#2F80FF]" },
+    { title: "Financial services", subtitle: "Annuity & insurance buyers", tag: "ACTIVE", tagStyle: "border border-[#2F80FF] text-[#2F80FF]" },
+    { title: "Healthcare", subtitle: "Patient acquisition & referrals", tag: "SOON", tagStyle: "border border-[rgba(47,128,255,0.35)] text-[rgba(159,179,200,0.5)]" },
   ];
   return (
     <section id="verticals" className="bg-[#113355] border-b border-[#1F3B5B]">
-      <div className="mx-auto max-w-[1080px] px-6 py-16">
-        <h2 className="text-[22px] font-bold tracking-[-0.015em] text-[#E6EDF5] mb-8">
-          Built for <span className="text-[#2F80FF]">high-stakes</span> decision systems.
-        </h2>
+      <div className="mx-auto max-w-[1200px]">
+        <div className="px-[24px] pt-[24px] pb-[24px] md:px-[48px] md:pt-[48px] md:pb-[32px]">
+          <h2 className="text-[22px] font-bold tracking-[-0.015em] text-[#E6EDF5]">
+            Built for <span className="text-[#2F80FF]">high-stakes</span> decision systems.
+          </h2>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1F3B5B]">
           {items.map((item) => (
-            <div key={item.title} className="bg-[#0A2540] p-5 flex items-center justify-between">
+            <div key={item.title} className="bg-[#0A2540] p-[24px] flex items-center justify-between">
               <div>
                 <div className="text-[13px] font-semibold text-white">{item.title}</div>
-                <div className="text-[11px] text-[rgba(159,179,200,0.75)] mt-0.5">Vertical</div>
+                <div className="text-[11px] text-[rgba(159,179,200,0.75)] mt-0.5">{item.subtitle}</div>
               </div>
               <span className={`text-[10px] font-semibold uppercase tracking-[0.08em] px-2 py-0.5 rounded-[2px] ${item.tagStyle}`}>
                 {item.tag}
@@ -180,12 +188,12 @@ function Verticals() {
 function CTAFooter() {
   return (
     <footer id="contact" className="bg-[#0A2540]">
-      <div className="mx-auto max-w-[1080px] px-6 py-16 flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-        <div>
-          <h2 className="text-[22px] font-bold tracking-[-0.015em] text-[#E6EDF5] mb-2">
+      <div className="mx-auto max-w-[1200px] px-[24px] py-[24px] md:px-[48px] md:py-[64px] flex flex-col md:flex-row md:items-center md:justify-between gap-[48px]">
+        <div className="flex flex-col gap-[8px]">
+          <h2 className="text-[22px] font-bold tracking-[-0.015em] text-[#E6EDF5]">
             Ready to extract the <span className="text-[#2F80FF]">right signal?</span>
           </h2>
-          <p className="text-[12px] text-[rgba(159,179,200,0.75)] mb-2">
+          <p className="text-[12px] text-[rgba(159,179,200,0.75)]">
             Direct access to verified, high-intent opportunities.
           </p>
           <p className="text-[12px] text-[rgba(159,179,200,0.55)]">
