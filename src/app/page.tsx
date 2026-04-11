@@ -1,7 +1,7 @@
 function Logo() {
   return (
-    <div className="flex items-center gap-2.5">
-      <svg viewBox="0 0 32 32" width="28" height="28" className="shrink-0">
+    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+      <svg viewBox="0 0 32 32" width="28" height="28" style={{ flexShrink: 0 }}>
         <rect width="32" height="32" rx="4" fill="#113355" />
         <rect x="5" y="20" width="4" height="4" rx="0.5" fill="#2F80FF" opacity="0.35" />
         <rect x="11" y="16" width="4" height="8" rx="0.5" fill="#2F80FF" opacity="0.55" />
@@ -10,9 +10,9 @@ function Logo() {
         <line x1="7" y1="14" x2="25" y2="5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
         <polyline points="22,4 26,5 24,8" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
-      <span className="text-body tracking-tight">
-        <span className="font-normal text-text-primary">Extract</span>
-        <span className="font-semibold text-accent">Signal</span>
+      <span style={{ fontSize: "15px", letterSpacing: "-0.01em" }}>
+        <span style={{ fontWeight: 400, color: "#E6EDF5" }}>Extract</span>
+        <span style={{ fontWeight: 600, color: "#2F80FF" }}>Signal</span>
       </span>
     </div>
   );
@@ -20,16 +20,24 @@ function Logo() {
 
 function Nav() {
   return (
-    <nav className="border-b border-border bg-bg-primary">
-      <div className="mx-auto max-w-7xl px-6 md:px-12 flex items-center justify-between h-14">
+    <nav style={{ borderBottom: "1px solid #1F3B5B", background: "#0A2540" }}>
+      <div className="es-container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px" }}>
         <Logo />
-        <div className="flex items-center gap-7">
-          <a href="#methodology" className="text-nav text-text-secondary hover:text-text-primary transition-colors">How it works</a>
-          <a href="#verticals" className="text-nav text-text-secondary hover:text-text-primary transition-colors">Verticals</a>
-          <a href="#contact" className="text-nav text-text-secondary hover:text-text-primary transition-colors">Results</a>
+        <div style={{ display: "flex", alignItems: "center", gap: "28px" }}>
+          <a href="#methodology" style={{ fontSize: "12px", color: "#9FB3C8", textDecoration: "none" }}>How it works</a>
+          <a href="#verticals" style={{ fontSize: "12px", color: "#9FB3C8", textDecoration: "none" }}>Verticals</a>
+          <a href="#contact" style={{ fontSize: "12px", color: "#9FB3C8", textDecoration: "none" }}>Results</a>
           <a
             href="#contact"
-            className="bg-accent hover:bg-accent-hover transition-colors text-white text-nav font-semibold px-5 py-2 rounded-sm"
+            style={{
+              background: "#2F80FF",
+              color: "white",
+              fontSize: "12px",
+              fontWeight: 600,
+              padding: "8px 20px",
+              borderRadius: "3px",
+              textDecoration: "none",
+            }}
           >
             Get started
           </a>
@@ -41,32 +49,63 @@ function Nav() {
 
 function Hero() {
   return (
-    <section className="bg-bg-primary border-b border-border">
-      <div className="mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-20">
-        <div className="max-w-xl">
-          <span className="inline-block bg-bg-card border border-border rounded-sm px-2.5 py-1 text-label font-semibold uppercase tracking-widest text-text-secondary/75 mb-6">
+    <section style={{ background: "#0A2540", borderBottom: "1px solid #1F3B5B" }}>
+      <div className="es-container" style={{ paddingTop: "80px", paddingBottom: "80px" }}>
+        <div style={{ maxWidth: "560px" }}>
+          <span
+            style={{
+              display: "inline-block",
+              background: "#113355",
+              border: "1px solid #1F3B5B",
+              borderRadius: "2px",
+              padding: "4px 10px",
+              fontSize: "10px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.14em",
+              color: "rgba(159,179,200,0.75)",
+              marginBottom: "24px",
+            }}
+          >
             Growth Marketing
           </span>
-          <h1 className="text-hero font-normal tracking-tighter leading-tight mb-4">
-            <span className="text-text-primary">Signal from </span>
-            <span className="text-accent font-semibold">noise.</span>
+          <h1 style={{ fontSize: "42px", fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: "16px" }}>
+            <span style={{ color: "#E6EDF5" }}>Signal from </span>
+            <span style={{ color: "#2F80FF", fontWeight: 600 }}>noise.</span>
           </h1>
-          <p className="text-nav text-text-secondary/75 opacity-70 mb-3">
+          <p style={{ fontSize: "12px", color: "rgba(159,179,200,0.75)", opacity: 0.7, marginBottom: "12px" }}>
             Signal extraction for structured settlement and legal data.
           </p>
-          <p className="text-body font-normal leading-relaxed text-text-secondary max-w-lg">
+          <p style={{ fontSize: "15px", fontWeight: 400, lineHeight: 1.6, color: "#9FB3C8", maxWidth: "480px" }}>
             We extract and qualify high-intent prospects at the source. Delivering structured opportunities to operators who convert them.
           </p>
-          <div className="flex items-center gap-3 mt-8">
+          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "32px" }}>
             <a
               href="#contact"
-              className="bg-accent hover:bg-accent-hover transition-colors text-white text-btn font-semibold px-7 py-3 rounded-sm"
+              style={{
+                background: "#2F80FF",
+                color: "white",
+                fontSize: "13px",
+                fontWeight: 600,
+                padding: "12px 26px",
+                borderRadius: "3px",
+                textDecoration: "none",
+              }}
             >
               Start a conversation
             </a>
             <a
               href="#methodology"
-              className="border border-accent text-accent hover:bg-accent hover:text-white transition-colors text-btn font-semibold px-7 py-3 rounded-sm"
+              style={{
+                border: "1px solid #2F80FF",
+                color: "#2F80FF",
+                fontSize: "13px",
+                fontWeight: 600,
+                padding: "12px 26px",
+                borderRadius: "3px",
+                textDecoration: "none",
+                background: "none",
+              }}
             >
               View methodology
             </a>
@@ -78,34 +117,29 @@ function Hero() {
 }
 
 function Metrics() {
+  const stats = [
+    { value: "94%", label: "Qualified lead rate" },
+    { value: "3.2×", label: "Average client ROI" },
+    { value: "48hr", label: "Median delivery time" },
+  ];
   return (
-    <section className="border-b border-border bg-bg-primary">
-      <div className="mx-auto max-w-7xl px-6 md:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3">
-          <div className="py-8 md:pr-12">
-            <div className="text-stat font-semibold tracking-tight text-text-primary mb-1">
-              94%
+    <section style={{ borderBottom: "1px solid #1F3B5B", background: "#0A2540" }}>
+      <div className="es-container">
+        <div className="metrics-grid">
+          {stats.map((stat, i) => (
+            <div
+              key={stat.label}
+              className={i > 0 ? "metrics-cell-bordered" : "metrics-cell"}
+              style={{ paddingTop: "32px", paddingBottom: "32px" }}
+            >
+              <div style={{ fontSize: "28px", fontWeight: 600, letterSpacing: "-0.02em", color: "#E6EDF5", marginBottom: "4px" }}>
+                {stat.value}
+              </div>
+              <div style={{ fontSize: "12px", color: "rgba(159,179,200,0.75)" }}>
+                {stat.label}
+              </div>
             </div>
-            <div className="text-nav text-text-secondary/75">
-              Qualified lead rate
-            </div>
-          </div>
-          <div className="py-8 md:px-12 border-t md:border-t-0 md:border-l border-border">
-            <div className="text-stat font-semibold tracking-tight text-text-primary mb-1">
-              3.2×
-            </div>
-            <div className="text-nav text-text-secondary/75">
-              Average client ROI
-            </div>
-          </div>
-          <div className="py-8 md:pl-12 border-t md:border-t-0 md:border-l border-border">
-            <div className="text-stat font-semibold tracking-tight text-text-primary mb-1">
-              48hr
-            </div>
-            <div className="text-nav text-text-secondary/75">
-              Median delivery time
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>
@@ -119,29 +153,30 @@ function Pipeline() {
     { num: "03", title: "Deliver", body: "Delivered to your CRM. No noise. No lag." },
   ];
   return (
-    <section id="methodology" className="bg-bg-primary border-b border-border">
-      <div className="mx-auto max-w-7xl px-6 md:px-12">
-        <div className="pt-12 pb-8">
-          <span className="block text-label font-semibold uppercase tracking-widest text-text-secondary/75 mb-3">
+    <section id="methodology" style={{ background: "#0A2540", borderBottom: "1px solid #1F3B5B" }}>
+      <div className="es-container">
+        <div style={{ paddingTop: "48px", paddingBottom: "32px" }}>
+          <span style={{ display: "block", fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "rgba(159,179,200,0.75)", marginBottom: "12px" }}>
             How it works
           </span>
-          <h2 className="text-section font-bold tracking-tight text-text-primary">
-            A conversion system, <span className="text-accent">end-to-end.</span>
+          <h2 style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.015em", color: "#E6EDF5" }}>
+            A conversion system, <span style={{ color: "#2F80FF" }}>end-to-end.</span>
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 border-t border-border">
+        <div className="pipeline-grid" style={{ borderTop: "1px solid #1F3B5B" }}>
           {steps.map((step, i) => (
             <div
               key={step.num}
-              className={`py-8 ${i === 0 ? "md:pr-8" : i === 1 ? "md:px-8" : "md:pl-8"} ${i > 0 ? "md:border-l border-t md:border-t-0 border-border" : ""}`}
+              className={i > 0 ? "pipeline-cell-bordered" : "pipeline-cell"}
+              style={{ paddingTop: "32px", paddingBottom: "32px" }}
             >
-              <div className="text-label font-semibold uppercase tracking-widest text-accent mb-4">
+              <div style={{ fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#2F80FF", marginBottom: "16px" }}>
                 {step.num}
               </div>
-              <div className="text-step-title font-bold text-white mb-2">
+              <div style={{ fontSize: "14px", fontWeight: 700, color: "white", marginBottom: "8px" }}>
                 {step.title}
               </div>
-              <p className="text-nav text-text-secondary/75 opacity-80 leading-relaxed">
+              <p style={{ fontSize: "12px", color: "rgba(159,179,200,0.75)", opacity: 0.8, lineHeight: 1.55 }}>
                 {step.body}
               </p>
             </div>
@@ -154,30 +189,56 @@ function Pipeline() {
 
 function Verticals() {
   const items = [
-    { title: "Structured settlements", subtitle: "Plaintiff & claimant targeting", tag: "CORE", tagStyle: "bg-accent text-white" },
-    { title: "Legal services", subtitle: "Mass tort & personal injury", tag: "ACTIVE", tagStyle: "border border-accent text-accent" },
-    { title: "Financial services", subtitle: "Annuity & insurance buyers", tag: "ACTIVE", tagStyle: "border border-accent text-accent" },
-    { title: "Healthcare", subtitle: "Patient acquisition & referrals", tag: "SOON", tagStyle: "border border-accent/35 text-text-secondary/50" },
+    { title: "Structured settlements", subtitle: "Plaintiff & claimant targeting", tag: "CORE", tagType: "core" as const },
+    { title: "Legal services", subtitle: "Mass tort & personal injury", tag: "ACTIVE", tagType: "active" as const },
+    { title: "Financial services", subtitle: "Annuity & insurance buyers", tag: "ACTIVE", tagType: "active" as const },
+    { title: "Healthcare", subtitle: "Patient acquisition & referrals", tag: "SOON", tagType: "soon" as const },
   ];
+
+  const tagStyles = {
+    core: { background: "#2F80FF", color: "white", border: "none" },
+    active: { background: "none", color: "#2F80FF", border: "1px solid #2F80FF" },
+    soon: { background: "none", color: "rgba(159,179,200,0.5)", border: "1px solid rgba(47,128,255,0.35)" },
+  };
+
   return (
-    <section id="verticals" className="bg-bg-card border-b border-border">
-      <div className="mx-auto max-w-7xl px-6 md:px-12">
-        <div className="pt-12 pb-8">
-          <span className="block text-label font-semibold uppercase tracking-widest text-text-secondary/75 mb-3">
+    <section id="verticals" style={{ background: "#113355", borderBottom: "1px solid #1F3B5B" }}>
+      <div className="es-container">
+        <div style={{ paddingTop: "48px", paddingBottom: "32px" }}>
+          <span style={{ display: "block", fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "rgba(159,179,200,0.75)", marginBottom: "12px" }}>
             Verticals
           </span>
-          <h2 className="text-section font-bold tracking-tight text-text-primary">
-            Built for <span className="text-accent">high-stakes</span> decision systems.
+          <h2 style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.015em", color: "#E6EDF5" }}>
+            Built for <span style={{ color: "#2F80FF" }}>high-stakes</span> decision systems.
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-border pb-12">
+        <div className="verticals-grid" style={{ marginBottom: "48px" }}>
           {items.map((item) => (
-            <div key={item.title} className="bg-bg-primary p-6 flex items-center justify-between">
+            <div
+              key={item.title}
+              style={{
+                background: "#0A2540",
+                padding: "24px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
               <div>
-                <div className="text-cell-title font-semibold text-white">{item.title}</div>
-                <div className="text-sub text-text-secondary/75 mt-0.5">{item.subtitle}</div>
+                <div style={{ fontSize: "13px", fontWeight: 600, color: "white" }}>{item.title}</div>
+                <div style={{ fontSize: "11px", color: "rgba(159,179,200,0.75)", marginTop: "2px" }}>{item.subtitle}</div>
               </div>
-              <span className={`text-label font-semibold uppercase tracking-wide px-2 py-0.5 rounded-sm ${item.tagStyle}`}>
+              <span
+                style={{
+                  fontSize: "10px",
+                  fontWeight: 600,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.08em",
+                  padding: "2px 8px",
+                  borderRadius: "2px",
+                  ...tagStyles[item.tagType],
+                }}
+              >
                 {item.tag}
               </span>
             </div>
@@ -190,24 +251,34 @@ function Verticals() {
 
 function CTAFooter() {
   return (
-    <footer id="contact" className="bg-bg-primary">
-      <div className="mx-auto max-w-7xl px-6 py-12 md:px-12 md:py-16 flex flex-col md:flex-row md:items-center md:justify-between gap-12">
-        <div className="flex flex-col gap-2">
-          <h2 className="text-section font-bold tracking-tight text-text-primary">
-            Ready to extract the <span className="text-accent">right signal?</span>
+    <footer id="contact" style={{ background: "#0A2540" }}>
+      <div className="es-container cta-layout" style={{ paddingTop: "64px", paddingBottom: "64px" }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+          <h2 style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.015em", color: "#E6EDF5" }}>
+            Ready to extract the <span style={{ color: "#2F80FF" }}>right signal?</span>
           </h2>
-          <p className="text-nav text-text-secondary/75">
+          <p style={{ fontSize: "12px", color: "rgba(159,179,200,0.75)" }}>
             Direct access to verified, high-intent opportunities.
           </p>
-          <p className="text-nav text-text-secondary/55">
-            <a href="mailto:zach@extractsignal.com" className="hover:text-text-secondary transition-colors">
+          <p style={{ fontSize: "12px", color: "rgba(159,179,200,0.55)" }}>
+            <a href="mailto:zach@extractsignal.com" style={{ color: "inherit", textDecoration: "none" }}>
               zach@extractsignal.com
             </a>
           </p>
         </div>
         <a
           href="mailto:zach@extractsignal.com"
-          className="bg-accent hover:bg-accent-hover transition-colors text-white text-btn font-semibold px-7 py-3.5 rounded-sm whitespace-nowrap self-start md:self-center"
+          style={{
+            background: "#2F80FF",
+            color: "white",
+            fontSize: "13px",
+            fontWeight: 600,
+            padding: "13px 28px",
+            borderRadius: "3px",
+            textDecoration: "none",
+            whiteSpace: "nowrap",
+            alignSelf: "center",
+          }}
         >
           Let&apos;s talk
         </a>
