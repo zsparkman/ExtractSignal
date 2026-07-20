@@ -64,21 +64,33 @@ export default function HeroZone({ children }: { children: React.ReactNode }) {
       Math.sin(x * 0.019 + t * 0.9) * 0.4 +
       Math.sin(x * 0.047 - t * 1.5) * 0.27 +
       Math.sin(x * 0.101 + t * 2.2) * 0.19 +
-      Math.sin(x * 0.223 - t * 3.1) * 0.11 +
-      tri(x * 0.006 - t * 0.18) * 0.22;
+      Math.sin(x * 0.223 - t * 3.1) * 0.13 +
+      Math.sin(x * 0.409 + t * 4.6) * 0.1 +   // higher octaves = finer, busier chaos
+      Math.sin(x * 0.87 - t * 6.2) * 0.06 +
+      tri(x * 0.006 - t * 0.18) * 0.22 +
+      tri(x * 0.031 + t * 2.7) * 0.09;         // a second sawtooth roughens the ride
     const smooth = (p: number) => (p <= 0 ? 0 : p >= 1 ? 1 : p * p * (3 - 2 * p));
 
     let t = 0, pulseT = 0;
     const pulses: { x: number }[] = [];
     const parts: Particle[] = [];
 
-    const trace = (phase: number, cleanAmp: number, noiseAmp: number, gx: number) => {
+    const trace = (
+      phase: number, cleanAmp: number, noiseAmp: number, gx: number, jitter = 0, turb = 0,
+    ) => {
       cx.beginPath();
       for (let x = 0; x <= W; x += 2) {
         const resolve = smooth((x - gx + 70) / 140); // 0 = raw, 1 = clean
         const clean = Math.sin(x * 0.02 - t * 2.2 + phase) * cleanAmp;
-        const raw = noise(x + phase * 137, t + phase) * noiseAmp;
-        const y = H / 2 + clean * (0.35 + 0.65 * resolve) + raw * (1 - resolve);
+        // Roaming turbulence envelope: two slow beats multiply into hot-spots
+        // that swell the amplitude far past baseline — the "at times" bursts.
+        const env = turb
+          ? 1 + turb * Math.pow(Math.max(0, Math.sin(t * 0.8 + x * 0.004 + phase) * Math.sin(t * 0.37 - x * 0.011)), 1.5)
+          : 1;
+        const raw = noise(x + phase * 137, t + phase) * noiseAmp * env;
+        // per-frame grain, only on the unresolved (left) side — reads as static
+        const jit = jitter ? (Math.random() - 0.5) * jitter * (1 - resolve) : 0;
+        const y = H / 2 + clean * (0.35 + 0.65 * resolve) + raw * (1 - resolve) + jit;
         x === 0 ? cx.moveTo(x, y) : cx.lineTo(x, y);
       }
       cx.stroke();
@@ -86,19 +98,24 @@ export default function HeroZone({ children }: { children: React.ReactNode }) {
 
     const drawSignal = (dt: number) => {
       const accent = accentOf();
-      const gx = W * 0.56;
+      const gx = W * 0.5; // gate meets in the true center of the full-bleed canvas
       cx.clearRect(0, 0, W, H);
 
       cx.strokeStyle = "rgba(233,233,237,0.07)"; cx.lineWidth = 1;
       cx.beginPath(); cx.moveTo(0, H / 2); cx.lineTo(W, H / 2); cx.stroke();
 
-      // Left of the gate: incoherent waves, each its own phase and frequency mix.
+      // Left of the gate: a dense stack of incoherent waves, each its own
+      // phase and frequency mix. 'lighter' lets overlapping strokes build
+      // into thick turbulent bands rather than flat lines.
       cx.save(); cx.beginPath(); cx.rect(0, 0, gx, H); cx.clip();
-      for (let i = 0; i < 3 + CFG.ghosts; i++) {
-        cx.strokeStyle = `rgba(190,200,220,${0.34 - i * 0.04})`;
-        cx.lineWidth = 1.3;
-        trace(0.7 + i * 2.31, 16 + (i % 3) * 3, 24 + i * 4, gx);
+      cx.globalCompositeOperation = "lighter";
+      const nWaves = 9 + CFG.ghosts;
+      for (let i = 0; i < nWaves; i++) {
+        cx.strokeStyle = `rgba(150,175,215,${0.22 - i * 0.014})`;
+        cx.lineWidth = 1.1 + (i % 3) * 1.1; // varied thickness thickens the mass
+        trace(0.7 + i * 2.31, 12 + (i % 3) * 3, 34 + i * 7, gx, 4 + (i % 2) * 3, 2.4);
       }
+      cx.globalCompositeOperation = "source-over";
       cx.restore();
 
       cx.save(); cx.beginPath(); cx.rect(gx, 0, W - gx, H); cx.clip();
@@ -149,7 +166,7 @@ export default function HeroZone({ children }: { children: React.ReactNode }) {
 
       while (parts.length < CFG.particles) parts.push(resetP({} as Particle));
       const accent = accentOf();
-      const gateX = offX + W * 0.56;
+      const gateX = offX + W * 0.5;
 
       for (const p of parts) {
         if (!p.riding) {

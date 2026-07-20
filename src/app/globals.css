@@ -79,6 +79,7 @@ body {
       color-mix(in srgb, black 30%, transparent), transparent 55%),
     var(--color-bg);
   text-wrap: pretty;
+  overflow-x: clip;
 }
 
 html { scroll-behavior: smooth; }
@@ -177,9 +178,18 @@ figure { margin: 0; }
 .hero-zone { position: relative; }
 .hero-zone .drift { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-/* — the extraction figure: noise resolving into signal — */
-.hero-signal { padding: calc(1.5 * var(--leading)) 0 calc(2.5 * var(--leading)); position: relative; }
-.hero-signal canvas { display: block; width: 100%; height: 200px; }
+/* — the extraction figure: noise resolving into signal —
+   Full-bleed: the traces run to both viewport edges and meet at the gate in
+   the center, while the figure itself still sits in normal document flow
+   inside .wrap. margin-inline breaks it out symmetrically to 100vw; body's
+   overflow-x: clip absorbs the scrollbar-width difference between vw and %. */
+.hero-signal { padding: calc(1.5 * var(--leading)) 0 0; position: relative;
+  margin-inline: calc(50% - 50vw);
+  /* Ride above the following section and let clicks pass through, so the
+     turbulent left side can spill down over the duplex text at its peaks. */
+  z-index: 1; pointer-events: none;
+  margin-bottom: calc(-2 * var(--leading)); }
+.hero-signal canvas { display: block; width: 100%; height: 320px; }
 
 /* — duplex: receive / transmit — */
 .duplex { display: grid; grid-template-columns: 1fr 1fr; gap: var(--leading) clamp(24px, 5vw, 96px);
