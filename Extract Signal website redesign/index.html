@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ExtractSignal — Signal from noise</title>
+<link rel="icon" href="assets/logo.svg" />
+<script src="./ds-base.js"></script>
+<style>
+:root {
+  --leading: 28px;
+  --half: 14px;
+  --edge: clamp(20px, 5vw, 72px);
+  --measure: 58ch;
+  /* ExtractSignal brand blues mapped onto the Nocturne accent role — the
+     brand's #2F80FF as accent-500, a full OKLCH ramp derived on the system's
+     shared lightness scale, and the saturated section ground moved from
+     indigo to the brand's deep signal blue. */
+  --color-accent: #2F80FF;
+  --color-accent-100: oklch(0.93 0.035 259);
+  --color-accent-200: oklch(0.86 0.075 259);
+  --color-accent-300: oklch(0.78 0.115 259);
+  --color-accent-400: oklch(0.69 0.16 259);
+  --color-accent-500: #2F80FF;
+  --color-accent-600: oklch(0.55 0.19 259);
+  --color-accent-700: oklch(0.45 0.155 259);
+  --color-accent-800: oklch(0.35 0.115 259);
+  --color-accent-900: oklch(0.26 0.075 259);
+  --color-accent-2: var(--color-accent);
+  --color-accent-2-300: var(--color-accent-300);
+  --color-accent-2-500: var(--color-accent-500);
+  --color-accent-2-700: var(--color-accent-700);
+  --color-accent-2-900: var(--color-accent-900);
+  --color-section: oklch(0.29 0.085 255);
+  --color-section-glow: oklch(0.42 0.13 255);
+}
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background:
+    radial-gradient(1200px 720px at 82% -160px,
+      color-mix(in srgb, var(--color-accent-900) 75%, transparent), transparent 60%),
+    radial-gradient(1100px 800px at -10% 100%,
+      color-mix(in srgb, black 30%, transparent), transparent 55%),
+    var(--color-bg);
+  text-wrap: pretty;
+}
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 var(--edge); }
+.nav { padding-inline: max(var(--edge), calc((100% - 1200px) / 2 + var(--edge))); }
+.nav a { white-space: nowrap; }
+.nav a[aria-current='location'] { color: var(--color-accent); }
+@media (max-width: 480px) { .nav a { display: none; } }
+.brand { display: inline-flex; align-items: center; gap: 10px; }
+.brand svg { display: block; }
+.brand .wm { font-size: 15px; letter-spacing: -0.01em; color: var(--color-text); }
+.brand .wm b { font-weight: 600; color: var(--color-accent); }
+
+.rule { height: 1px; border: 0; margin: 0;
+  background: linear-gradient(to right, transparent, var(--color-divider) 48px calc(100% - 48px), transparent); }
+
+.kicker {
+  position: relative; display: block;
+  font-size: 13px; line-height: var(--half); letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--color-accent); font-feature-settings: "tnum" 1;
+  margin: 0 0 calc(var(--leading) - var(--half));
+}
+.kicker::before { content: ""; position: absolute; left: -64px; top: calc(50% - 0.5px);
+  width: 44px; height: 1px; background: var(--color-accent); }
+@media (max-width: 1280px) { .kicker::before { display: none; } }
+
+/* — hero — */
+.hero { padding: calc(3.5 * var(--leading)) 0 0; }
+.display {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(44px, 6.4vw, 88px);
+  line-height: clamp(49px, 7.13vw, 98px);
+  letter-spacing: -0.015em; margin: 0;
+  margin-left: -0.06em;
+  text-box: trim-both cap alphabetic;
+}
+.display .line { display: block; }
+.display .accent { color: var(--color-accent); }
+.hero .sub { font-size: 17px; line-height: var(--leading); max-width: var(--measure);
+  margin: calc(1.5 * var(--leading) - 1cap) 0 0; color: var(--color-text);
+  text-box: trim-both cap alphabetic; }
+.hero .row { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-top: var(--leading); }
+
+/* — hero zone: particle drift behind the text — */
+.hero-zone { position: relative; }
+.hero-zone .drift { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+
+/* — the extraction figure: noise resolving into signal — */
+.hero-signal { padding: calc(1.5 * var(--leading)) 0 calc(2.5 * var(--leading)); position: relative; }
+.hero-signal canvas { display: block; width: 100%; height: 200px; }
+
+/* — duplex: receive / transmit — */
+.duplex { display: grid; grid-template-columns: 1fr 1fr; gap: var(--leading) clamp(24px, 5vw, 96px);
+  padding: 0 0 calc(2.5 * var(--leading)); }
+.dx-label { display: block; font-size: 13px; line-height: var(--half); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-accent); font-feature-settings: "tnum" 1;
+  margin: 0 0 calc(var(--leading) - var(--half)); }
+.dx-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 24px; line-height: var(--leading); letter-spacing: -0.01em; margin: 0;
+  text-box: trim-both cap alphabetic; }
+.dx-copy { font-size: 15.5px; line-height: var(--leading); margin: calc(var(--leading) - 1cap) 0 0;
+  color: color-mix(in srgb, var(--color-text) 78%, transparent); max-width: 48ch;
+  text-box: trim-both cap alphabetic; }
+.dx { position: relative; padding-left: 22px; }
+.dx::before { content: ""; position: absolute; left: 0; top: 2px; bottom: 2px; width: 2px;
+  background: linear-gradient(to bottom, var(--color-accent), transparent); border-radius: 1px; }
+@media (max-width: 720px) { .duplex { grid-template-columns: 1fr; } }
+
+/* — stat band — */
+.stats { background:
+    radial-gradient(900px 420px at 85% -40%,
+      color-mix(in srgb, var(--color-section-glow) 70%, transparent), transparent 64%),
+    var(--color-section);
+  padding: calc(2.5 * var(--leading)) 0; }
+.stats .grid { display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: calc(1.5 * var(--leading)) var(--leading); }
+.stat-num { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(36px, 3.6vw, 52px); line-height: calc(2 * var(--leading));
+  color: var(--color-text); margin: 0; margin-left: -0.055em;
+  font-feature-settings: "tnum" 1;
+  text-box: trim-both cap alphabetic; }
+.stat-label { font-size: 13px; line-height: var(--half); letter-spacing: 0.06em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 64%, transparent);
+  margin: var(--half) 0 0; }
+
+/* — methodology rows — */
+.features { padding: calc(3.5 * var(--leading)) 0 calc(2.5 * var(--leading)); }
+.feature { display: grid; grid-template-columns: minmax(64px, 160px) minmax(0, 420px) minmax(0, 1fr);
+  gap: var(--leading) clamp(24px, 4vw, 72px); align-items: baseline;
+  padding: calc(1.5 * var(--leading)) 0; }
+.feature + .feature { border: 0; position: relative; }
+.feature + .feature::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--color-neutral-700) 48px calc(100% - 48px), transparent); }
+.f-num { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 15px; line-height: var(--leading); color: var(--color-accent);
+  font-feature-settings: "tnum" 1; margin: 0; text-box: trim-both cap alphabetic; }
+.f-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 24px; line-height: var(--leading); letter-spacing: -0.01em;
+  margin: 0; text-box: trim-both cap alphabetic; }
+.f-copy { font-size: 15.5px; line-height: var(--leading); margin: 0;
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  max-width: 52ch; text-box: trim-both cap alphabetic; }
+
+/* — verticals split — */
+.split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: var(--leading) clamp(24px, 5vw, 96px); align-items: center;
+  padding: calc(2 * var(--leading)) 0 calc(3 * var(--leading)); }
+.split-copy .note { font-size: 15.5px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  margin: calc(var(--leading) - 1cap) 0 0; max-width: 48ch; text-box: trim-both cap alphabetic; }
+.split-title { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 32px; line-height: calc(1.5 * var(--leading)); letter-spacing: -0.012em;
+  margin: 0; text-box: trim-both cap alphabetic; }
+.vgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--color-divider); border: 1px solid var(--color-divider); border-radius: var(--radius-md); overflow: hidden; }
+.vcell { background: color-mix(in srgb, var(--color-bg) 88%, black);
+  padding: var(--space-6); display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.vcell .t { font-size: 15px; font-weight: 500; color: var(--color-text); line-height: 1.35; }
+.vcell .s { font-size: 13px; color: color-mix(in srgb, var(--color-text) 60%, transparent); margin-top: 3px; line-height: 1.4; }
+@media (max-width: 560px) { .vgrid { grid-template-columns: 1fr; } }
+
+/* — principle quote — */
+.quote { padding: calc(2.5 * var(--leading)) 0 calc(3.5 * var(--leading)); }
+.quote blockquote {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: clamp(24px, 2.6vw, 34px); line-height: calc(1.5 * var(--leading));
+  letter-spacing: -0.01em; max-width: 32ch; margin: 0;
+  text-indent: -0.474em;
+  text-box: trim-both cap alphabetic;
+}
+.quote figcaption { font-size: 15.5px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 64%, transparent);
+  margin: calc(var(--leading) - 1cap) 0 0;
+  text-indent: -1.267em;
+  text-box: trim-both cap alphabetic; }
+@media (max-width: 720px) {
+  .quote blockquote, .quote figcaption { text-indent: 0; }
+}
+
+/* — close — */
+.close { padding: calc(2.5 * var(--leading)) 0 calc(2 * var(--leading)); }
+.close h3 { font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 24px; line-height: var(--leading); margin: 0; text-box: trim-both cap alphabetic; }
+.close .sub { font-size: 15.5px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 78%, transparent);
+  margin: calc(var(--leading) - 1cap) 0 0; max-width: var(--measure); text-box: trim-both cap alphabetic; }
+.close .row { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; margin-top: var(--leading); }
+.close .mail { font-size: 13px; color: color-mix(in srgb, var(--color-text) 55%, transparent); text-decoration: none; }
+.close .mail:hover { color: var(--color-accent-300); }
+footer { padding: calc(2 * var(--leading)) 0; font-size: 13px; line-height: var(--leading);
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+  display: flex; justify-content: space-between; gap: var(--leading); flex-wrap: wrap; }
+
+/* — motion (three explorable levels) — */
+.reveal { opacity: 1; transform: none; }
+body[data-motion="confident"] .reveal, body[data-motion="bold"] .reveal {
+  opacity: 0; transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--rd, 0s);
+}
+body[data-motion="confident"] .reveal.in, body[data-motion="bold"] .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  body .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+.ambient { position: fixed; inset: 0; z-index: -1; pointer-events: none; display: none; }
+body[data-motion="bold"] .ambient { display: block; }
+.motion-dock { position: fixed; right: 16px; bottom: 16px; z-index: 60;
+  display: flex; align-items: center; gap: 8px;
+  background: color-mix(in srgb, var(--color-bg) 78%, black);
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+  padding: 6px 8px; backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-md); }
+.motion-dock .lbl { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent); padding-left: 4px; }
+.motion-dock button { font: inherit; font-size: 12px; line-height: 1;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+  background: none; border: 1px solid transparent; border-radius: var(--radius-sm);
+  padding: 6px 10px; cursor: pointer; }
+.motion-dock button:hover { color: var(--color-text);
+  background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
+.motion-dock button:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.motion-dock button[aria-pressed="true"] { color: var(--color-accent-200);
+  border-color: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--color-accent) 14%, transparent); }
+
+@media (max-width: 880px) {
+  .feature { grid-template-columns: 1fr; gap: var(--half); }
+  .f-copy { max-width: var(--measure); }
+}
+@media (max-width: 720px) {
+  .hero { padding-top: calc(2.5 * var(--leading)); }
+  .stats .grid { grid-template-columns: repeat(2, 1fr); justify-content: start; }
+  .split { grid-template-columns: 1fr; }
+}
+body[data-baselines] { position: relative; }
+body[data-baselines]::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--color-accent) 35%, transparent) 0 1px,
+      transparent 1px var(--leading)),
+    repeating-linear-gradient(to bottom,
+      transparent 0 var(--half),
+      color-mix(in srgb, var(--color-accent) 16%, transparent) var(--half) calc(var(--half) + 1px),
+      transparent calc(var(--half) + 1px) var(--leading));
+}
+</style>
+</head>
+<body data-motion="confident">
+<canvas class="ambient" aria-hidden="true"></canvas>
+<nav class="nav">
+  <span class="nav-brand brand">
+    <svg viewBox="0 0 40 32" width="28" height="22" aria-hidden="true">
+      <line x1="5" y1="14" x2="5" y2="18" stroke="#2F80FF" stroke-width="4" stroke-linecap="round" opacity="0.3"></line>
+      <line x1="12" y1="11" x2="12" y2="21" stroke="#2F80FF" stroke-width="4" stroke-linecap="round" opacity="0.5"></line>
+      <line x1="19" y1="8" x2="19" y2="24" stroke="#2F80FF" stroke-width="4" stroke-linecap="round" opacity="0.72"></line>
+      <line x1="26" y1="5" x2="26" y2="27" stroke="#2F80FF" stroke-width="4" stroke-linecap="round"></line>
+      <line x1="33" y1="10" x2="33" y2="22" stroke="#e9e9ed" stroke-width="4" stroke-linecap="round" opacity="0.9"></line>
+    </svg>
+    <span class="wm">Extract<b>Signal</b></span>
+  </span>
+  <a href="#methodology">Methodology</a>
+  <a href="#verticals">Verticals</a>
+  <a href="#contact">Contact</a>
+  <a class="btn btn-primary" href="mailto:zach@extractsignal.com">Start a conversation</a>
+</nav>
+<div class="wrap">
+<div class="hero-zone">
+  <canvas class="drift" aria-hidden="true"></canvas>
+
+  <section class="hero">
+    <h1 class="display"><span class="line">The market is noise.</span> <span class="line">We extract the <span class="accent">signal.</span></span></h1>
+    <p class="sub">Whether we boost your signal or parse your hidden message from the noise — growth marketing works both directions. Lead generation, research and market intelligence on one side; advertising, design and advocacy on the other.</p>
+    <div class="row">
+      <a class="btn btn-primary" href="mailto:zach@extractsignal.com">Start a conversation</a>
+      <a class="btn btn-ghost" href="#methodology">See the methodology</a>
+    </div>
+  </section>
+
+  <figure class="hero-signal" aria-label="A noisy trace passing through an extraction gate and emerging as a clean signal">
+    <canvas id="sigcanvas"></canvas>
+  </figure>
+</div>
+
+  <section class="duplex">
+    <div class="dx reveal">
+      <span class="dx-label">RX — receive</span>
+      <h2 class="dx-title">Isolate the signal in the noise.</h2>
+      <p class="dx-copy">Lead generation, research and market intelligence: we pull high-intent prospects and real answers out of the static — verified, scored, and delivered ready to act on.</p>
+    </div>
+    <div class="dx reveal" style="--rd: 0.12s">
+      <span class="dx-label">TX — transmit</span>
+      <h2 class="dx-title">Boost your signal over the noise.</h2>
+      <p class="dx-copy">Advertising, design and advocacy: when it's your message in the band, we raise it above every competing frequency — creative that carries, campaigns that cut through.</p>
+    </div>
+  </section>
+
+</div>
+  <section class="stats" aria-label="ExtractSignal, by the numbers">
+    <div class="wrap">
+      <div class="grid">
+        <div class="reveal"><p class="stat-num" data-count="94" data-suffix="%">94%</p><p class="stat-label">Qualified lead rate</p></div>
+        <div class="reveal" style="--rd: 0.12s"><p class="stat-num" data-count="3.2" data-decimals="1" data-suffix="×">3.2×</p><p class="stat-label">Average client ROI</p></div>
+        <div class="reveal" style="--rd: 0.24s"><p class="stat-num" data-count="48" data-suffix="hr">48hr</p><p class="stat-label">Median delivery time</p></div>
+      </div>
+    </div>
+  </section>
+<div class="wrap">
+
+  <section class="features" id="methodology">
+    <span class="kicker reveal">Methodology</span>
+    <div class="feature reveal">
+      <p class="f-num">01</p>
+      <h2 class="f-title">Extract at the source</h2>
+      <p class="f-copy">We work upstream of lists and lead exchanges — monitoring primary-source data and isolating the events that indicate someone is preparing to act, before that intent is diluted into a shared list.</p>
+    </div>
+    <div class="feature reveal">
+      <p class="f-num">02</p>
+      <h2 class="f-title">Qualify against your criteria</h2>
+      <p class="f-copy">Every record is checked for identity, eligibility and timing against your written criteria. What doesn't clear the bar is discarded — never discounted and passed along anyway.</p>
+    </div>
+    <div class="feature reveal">
+      <p class="f-num">03</p>
+      <h2 class="f-title">Deliver with provenance</h2>
+      <p class="f-copy">Qualified opportunities arrive in your CRM as structured records, each carrying its source and qualification trail. Delivered once, to one client — no shared lists, no resale.</p>
+    </div>
+  </section>
+
+  <section class="split" id="verticals">
+    <div class="split-copy reveal">
+      <span class="kicker">Verticals</span>
+      <h2 class="split-title">Proven where the stakes are highest.</h2>
+      <p class="note">Our first market is structured settlement funding — a heavily regulated transaction where a bad lead costs real money and a good one changes someone's life. A methodology that holds there holds anywhere.</p>
+    </div>
+    <div class="vgrid reveal" style="--rd: 0.15s">
+      <div class="vcell">
+        <div><div class="t">Structured settlements</div><div class="s">Plaintiff &amp; annuitant origination</div></div>
+        <span class="tag tag-accent">Core</span>
+      </div>
+      <div class="vcell">
+        <div><div class="t">Legal services</div><div class="s">Mass tort &amp; personal injury</div></div>
+        <span class="tag tag-outline">Active</span>
+      </div>
+      <div class="vcell">
+        <div><div class="t">Financial services</div><div class="s">Annuity &amp; insurance buyers</div></div>
+        <span class="tag tag-outline">Active</span>
+      </div>
+      <div class="vcell">
+        <div><div class="t">Healthcare</div><div class="s">Patient acquisition &amp; referrals</div></div>
+        <span class="tag tag-neutral">Exploring</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote">
+    <figure class="reveal">
+      <blockquote>“A lead is a claim about a person's intent. We treat it like one — sourced, verified, and delivered with provenance.”</blockquote>
+      <figcaption>— ExtractSignal operating principles</figcaption>
+    </figure>
+  </section>
+
+  <hr class="rule" />
+
+  <section class="close" id="contact">
+    <h3 class="reveal">Ready to extract the right signal?</h3>
+    <p class="sub reveal">Direct access to verified, high-intent opportunities. Write to us — a principal answers, usually the same day.</p>
+    <div class="row reveal">
+      <a class="btn btn-primary" href="mailto:zach@extractsignal.com">Email zach@extractsignal.com</a>
+      <a class="btn btn-ghost" href="#methodology">Review the methodology</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 ExtractSignal — an SPK Holdings LLC company</span>
+    <a class="mail" href="mailto:zach@extractsignal.com" style="color: inherit; text-decoration: none">zach@extractsignal.com</a>
+  </footer>
+</div>
+
+<div class="motion-dock" role="group" aria-label="Motion level">
+  <span class="lbl">Motion</span>
+  <button type="button" data-mode="subtle">Subtle</button>
+  <button type="button" data-mode="confident" aria-pressed="true">Confident</button>
+  <button type="button" data-mode="bold">Bold</button>
+</div>
+
+<script>
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const KEY = 'es-motion';
+  let mode = localStorage.getItem(KEY) || 'confident';
+  if (reduced) mode = 'subtle';
+  const cfg = () => ({
+    subtle:    { speed: 0.35, ghosts: 1, pulses: false, ambient: false, count: false },
+    confident: { speed: 1.0,  ghosts: 2, pulses: true,  ambient: false, count: true },
+    bold:      { speed: 1.35, ghosts: 4, pulses: true,  ambient: true,  count: true },
+  }[mode]);
+
+  const dock = document.querySelector('.motion-dock');
+  function applyMode(m) {
+    mode = m;
+    document.body.setAttribute('data-motion', m);
+    localStorage.setItem(KEY, m);
+    dock.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === m)));
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+  }
+  dock.addEventListener('click', e => {
+    const b = e.target.closest('button[data-mode]');
+    if (b) applyMode(b.dataset.mode);
+  });
+  document.body.setAttribute('data-motion', mode);
+  dock.querySelectorAll('button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+
+  /* — scroll reveals — */
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        en.target.classList.add('in');
+        if (en.target.querySelector('[data-count]') || en.target.matches('[data-count]')) startCounts(en.target);
+        io.unobserve(en.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  /* — stat count-up — */
+  const counted = new WeakSet();
+  function startCounts(scope) {
+    scope.querySelectorAll('[data-count]').forEach(el => {
+      if (counted.has(el)) return;
+      counted.add(el);
+      if (!cfg().count || reduced) return;
+      const end = parseFloat(el.dataset.count), dec = +(el.dataset.decimals || 0), suf = el.dataset.suffix || '';
+      const t0 = performance.now(), dur = 1400;
+      (function tick(t) {
+        const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+        el.textContent = (end * e).toFixed(dec) + suf;
+        if (p < 1) requestAnimationFrame(tick);
+      })(t0);
+    });
+  }
+
+  /* — hero extraction canvas: noise resolving into signal — */
+  const cv = document.getElementById('sigcanvas');
+  const cx = cv.getContext('2d');
+  const css = getComputedStyle(document.documentElement);
+  let W = 0, H = 0, dpr = 1;
+  function size() {
+    dpr = Math.min(2, devicePixelRatio || 1);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  new ResizeObserver(size).observe(cv);
+  size();
+
+  const tri = p => Math.abs(((p % 1) + 1) % 1 - 0.5) * 4 - 1;
+  const noise = (x, t) =>
+    Math.sin(x * 0.019 + t * 0.9) * 0.4 +
+    Math.sin(x * 0.047 - t * 1.5) * 0.27 +
+    Math.sin(x * 0.101 + t * 2.2) * 0.19 +
+    Math.sin(x * 0.223 - t * 3.1) * 0.11 +
+    tri(x * 0.006 - t * 0.18) * 0.22;
+  const smooth = p => p <= 0 ? 0 : p >= 1 ? 1 : p * p * (3 - 2 * p);
+
+  let t = 0, last = performance.now(), pulseT = 0;
+  const pulses = [];
+  function trace(phase, cleanAmp, noiseAmp, gx) {
+    cx.beginPath();
+    for (let x = 0; x <= W; x += 2) {
+      const resolve = smooth((x - gx + 70) / 140);            // 0 = raw, 1 = clean
+      const clean = Math.sin(x * 0.020 - t * 2.2 + phase) * cleanAmp;
+      const raw = noise(x + phase * 137, t + phase) * noiseAmp;
+      const y = H / 2 + clean * (0.35 + 0.65 * resolve) + raw * (1 - resolve);
+      x === 0 ? cx.moveTo(x, y) : cx.lineTo(x, y);
+    }
+    cx.stroke();
+  }
+  function draw(now) {
+    const c = cfg();
+    const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    t += dt * c.speed;
+    cx.clearRect(0, 0, W, H);
+    const accent = css.getPropertyValue('--color-accent').trim() || '#2F80FF';
+    const gx = W * 0.56;
+    // midline
+    cx.strokeStyle = 'rgba(233,233,237,0.07)'; cx.lineWidth = 1;
+    cx.beginPath(); cx.moveTo(0, H / 2); cx.lineTo(W, H / 2); cx.stroke();
+    // left of the gate: multiple incoherent waves, each its own phase and frequency mix
+    cx.save(); cx.beginPath(); cx.rect(0, 0, gx, H); cx.clip();
+    const nWaves = 3 + c.ghosts;
+    for (let i = 0; i < nWaves; i++) {
+      cx.strokeStyle = `rgba(190,200,220,${0.34 - i * 0.04})`;
+      cx.lineWidth = 1.3;
+      trace(0.7 + i * 2.31, 16 + (i % 3) * 3, 24 + i * 4, gx);
+    }
+    cx.restore();
+    cx.save(); cx.beginPath(); cx.rect(gx, 0, W - gx, H); cx.clip();
+    cx.strokeStyle = accent; cx.lineWidth = 2;
+    cx.shadowColor = accent; cx.shadowBlur = 12;
+    trace(0, 18, 32, gx); cx.restore();
+    // extraction gate
+    const gGrad = cx.createLinearGradient(gx, 0, gx, H);
+    gGrad.addColorStop(0, 'rgba(47,128,255,0)');
+    gGrad.addColorStop(0.5, 'rgba(47,128,255,0.85)');
+    gGrad.addColorStop(1, 'rgba(47,128,255,0)');
+    cx.strokeStyle = gGrad; cx.lineWidth = 1.5;
+    cx.beginPath(); cx.moveTo(gx, 6); cx.lineTo(gx, H - 6); cx.stroke();
+    const glow = cx.createRadialGradient(gx, H / 2, 0, gx, H / 2, 90);
+    glow.addColorStop(0, 'rgba(47,128,255,0.14)'); glow.addColorStop(1, 'rgba(47,128,255,0)');
+    cx.fillStyle = glow; cx.fillRect(gx - 90, 0, 180, H);
+    // delivery pulses riding the clean wave
+    if (c.pulses) {
+      pulseT -= dt;
+      if (pulseT <= 0) { pulses.push({ x: gx }); pulseT = mode === 'bold' ? 1.1 : 2.2; }
+      for (let i = pulses.length - 1; i >= 0; i--) {
+        const p = pulses[i];
+        p.x += dt * 170 * c.speed;
+        if (p.x > W + 8) { pulses.splice(i, 1); continue; }
+        const y = H / 2 + Math.sin(p.x * 0.020 - t * 2.2) * 18;
+        cx.fillStyle = accent; cx.shadowColor = accent; cx.shadowBlur = 14;
+        cx.beginPath(); cx.arc(p.x, y, 3, 0, Math.PI * 2); cx.fill();
+        cx.shadowBlur = 0;
+      }
+    }
+    if (!reduced) requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  /* — particle drift: falls behind the hero text, catches the tx wave — */
+  const zone = document.querySelector('.hero-zone');
+  const dc = zone.querySelector('.drift');
+  const dctx = dc.getContext('2d');
+  let DW = 0, DH = 0, offY = 0, offX = 0;
+  function dsize() {
+    DW = zone.clientWidth; DH = zone.clientHeight;
+    dc.width = DW * dpr; dc.height = DH * dpr;
+    dctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const sc = cv.getBoundingClientRect(), zc = zone.getBoundingClientRect();
+    offY = sc.top - zc.top; offX = sc.left - zc.left;
+  }
+  new ResizeObserver(dsize).observe(zone); dsize();
+  const parts = [];
+  function resetP(p) {
+    p.x = Math.random() * DW; p.y = -6 - Math.random() * DH * 0.6;
+    p.vy = 11 + Math.random() * 16; p.ph = Math.random() * 6.28;
+    p.r = 0.8 + Math.random() * 1.1; p.mode = 'drift';
+    p.a = 0.12 + Math.random() * 0.18; p.life = 1;
+    return p;
+  }
+  const waveYAt = x => offY + H / 2 + Math.sin((x - offX) * 0.020 - t * 2.2) * 18;
+  let dLast = performance.now();
+  (function driftDraw(now) {
+    requestAnimationFrame(driftDraw);
+    const c = cfg();
+    const dt = Math.min(0.05, (now - dLast) / 1000); dLast = now;
+    if (reduced) { dctx.clearRect(0, 0, DW, DH); return; }
+    const want = { subtle: 20, confident: 44, bold: 70 }[mode];
+    while (parts.length < want) parts.push(resetP({}));
+    if (parts.length > want) parts.length = want;
+    dctx.clearRect(0, 0, DW, DH);
+    const accent = css.getPropertyValue('--color-accent').trim() || '#2F80FF';
+    const gateX = offX + W * 0.56;
+    parts.forEach(p => {
+      if (p.mode === 'drift') {
+        p.y += p.vy * c.speed * dt;
+        p.x += Math.sin(t * 0.6 + p.ph) * 9 * dt;
+        if (p.x > gateX + 6) {
+          const wy = waveYAt(p.x);
+          if (p.y >= wy - 2 && p.y <= wy + 7) { p.mode = 'ride'; p.life = 1; }
+        }
+        if (p.y > DH + 10) resetP(p);
+        dctx.globalAlpha = p.a;
+        dctx.fillStyle = 'rgb(159,179,220)';
+        dctx.beginPath(); dctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); dctx.fill();
+      } else {
+        p.x += 110 * c.speed * dt;
+        p.y = waveYAt(p.x);
+        p.life -= dt * 0.7;
+        if (p.x > offX + W - 2 || p.life <= 0) { resetP(p); return; }
+        dctx.globalAlpha = Math.min(0.55, p.life * 0.7);
+        dctx.fillStyle = accent;
+        dctx.shadowColor = accent; dctx.shadowBlur = 8;
+        dctx.beginPath(); dctx.arc(p.x, p.y, p.r + 0.6, 0, Math.PI * 2); dctx.fill();
+        dctx.shadowBlur = 0;
+      }
+    });
+    dctx.globalAlpha = 1;
+  })(dLast);
+
+  /* — bold ambient: faint spectrogram dust — */
+  const amb = document.querySelector('.ambient');
+  const ax = amb.getContext('2d');
+  let ticks = [];
+  function ambSize() {
+    amb.width = innerWidth; amb.height = innerHeight;
+    ticks = Array.from({ length: 46 }, () => ({
+      x: Math.random() * innerWidth, y: Math.random() * innerHeight,
+      h: 8 + Math.random() * 36, v: 4 + Math.random() * 12, a: 0.02 + Math.random() * 0.05,
+    }));
+  }
+  addEventListener('resize', ambSize); ambSize();
+  (function ambDraw() {
+    if (mode === 'bold' && !reduced) {
+      ax.clearRect(0, 0, amb.width, amb.height);
+      ax.fillStyle = '#2F80FF';
+      ticks.forEach(k => {
+        k.y -= k.v / 60;
+        if (k.y + k.h < 0) { k.y = amb.height + 10; k.x = Math.random() * amb.width; }
+        ax.globalAlpha = k.a;
+        ax.fillRect(k.x, k.y, 1.5, k.h);
+      });
+      ax.globalAlpha = 1;
+    }
+    requestAnimationFrame(ambDraw);
+  })();
+})();
+</script>
+<script>
+(() => {
+  if (new URLSearchParams(location.search).has('baselines')) document.body.setAttribute('data-baselines', '');
+  addEventListener('keydown', (e) => {
+    const t = e.target;
+    if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+    if ((e.key === 'b' || e.key === 'B') && !e.metaKey && !e.ctrlKey && !e.altKey) document.body.toggleAttribute('data-baselines');
+  });
+})();
+</script>
+</body>
+</html>

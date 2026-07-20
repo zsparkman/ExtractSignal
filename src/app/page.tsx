@@ -1,301 +1,202 @@
-function Logo() {
+import HeroZone from "./hero-zone";
+import Reveals from "./reveals";
+
+const EMAIL = "zach@extractsignal.com";
+const MAILTO = `mailto:${EMAIL}`;
+
+function BrandMark() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-      <svg viewBox="0 0 32 32" width="28" height="28" style={{ flexShrink: 0 }}>
-        <rect width="32" height="32" rx="4" fill="#113355" />
-        <rect x="5" y="20" width="4" height="4" rx="0.5" fill="#2F80FF" opacity="0.35" />
-        <rect x="11" y="16" width="4" height="8" rx="0.5" fill="#2F80FF" opacity="0.55" />
-        <rect x="17" y="12" width="4" height="12" rx="0.5" fill="#2F80FF" opacity="0.75" />
-        <rect x="23" y="7" width="4" height="17" rx="0.5" fill="#2F80FF" opacity="1.0" />
-        <line x1="7" y1="14" x2="25" y2="5" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-        <polyline points="22,4 26,5 24,8" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-      <span style={{ fontSize: "15px", letterSpacing: "-0.01em" }}>
-        <span style={{ fontWeight: 400, color: "#E6EDF5" }}>Extract</span>
-        <span style={{ fontWeight: 600, color: "#2F80FF" }}>Signal</span>
-      </span>
-    </div>
+    <svg viewBox="0 0 40 32" width="28" height="22" aria-hidden="true">
+      <line x1="5" y1="14" x2="5" y2="18" stroke="#2F80FF" strokeWidth="4" strokeLinecap="round" opacity="0.3" />
+      <line x1="12" y1="11" x2="12" y2="21" stroke="#2F80FF" strokeWidth="4" strokeLinecap="round" opacity="0.5" />
+      <line x1="19" y1="8" x2="19" y2="24" stroke="#2F80FF" strokeWidth="4" strokeLinecap="round" opacity="0.72" />
+      <line x1="26" y1="5" x2="26" y2="27" stroke="#2F80FF" strokeWidth="4" strokeLinecap="round" />
+      <line x1="33" y1="10" x2="33" y2="22" stroke="#e9e9ed" strokeWidth="4" strokeLinecap="round" opacity="0.9" />
+    </svg>
   );
 }
 
-function Nav() {
-  return (
-    <nav style={{ borderBottom: "1px solid #1F3B5B", background: "#0A2540" }}>
-      <div className="es-container" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: "56px" }}>
-        <Logo />
-        <div style={{ display: "flex", alignItems: "center", gap: "28px" }}>
-          <a href="#methodology" style={{ fontSize: "12px", color: "#9FB3C8", textDecoration: "none" }}>How it works</a>
-          <a href="#verticals" style={{ fontSize: "12px", color: "#9FB3C8", textDecoration: "none" }}>Verticals</a>
-          <a href="#contact" style={{ fontSize: "12px", color: "#9FB3C8", textDecoration: "none" }}>Results</a>
-          <a
-            href="#contact"
-            style={{
-              background: "#2F80FF",
-              color: "white",
-              fontSize: "12px",
-              fontWeight: 600,
-              padding: "8px 20px",
-              borderRadius: "3px",
-              textDecoration: "none",
-            }}
-          >
-            Get started
-          </a>
-        </div>
-      </div>
-    </nav>
-  );
-}
+const METHODOLOGY = [
+  {
+    num: "01",
+    title: "Extract at the source",
+    body: "We work upstream of lists and lead exchanges — monitoring primary-source data and isolating the events that indicate someone is preparing to act, before that intent is diluted into a shared list.",
+  },
+  {
+    num: "02",
+    title: "Qualify against your criteria",
+    body: "Every record is checked for identity, eligibility and timing against your written criteria. What doesn't clear the bar is discarded — never discounted and passed along anyway.",
+  },
+  {
+    num: "03",
+    title: "Deliver with provenance",
+    body: "Qualified opportunities arrive in your CRM as structured records, each carrying its source and qualification trail. Delivered once, to one client — no shared lists, no resale.",
+  },
+];
 
-function Hero() {
-  return (
-    <section style={{ background: "#0A2540", borderBottom: "1px solid #1F3B5B" }}>
-      <div className="es-container" style={{ paddingTop: "80px", paddingBottom: "80px" }}>
-        <div style={{ maxWidth: "560px" }}>
-          <span
-            style={{
-              display: "inline-block",
-              background: "#113355",
-              border: "1px solid #1F3B5B",
-              borderRadius: "2px",
-              padding: "4px 10px",
-              fontSize: "10px",
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.14em",
-              color: "rgba(159,179,200,0.75)",
-              marginBottom: "24px",
-            }}
-          >
-            Growth Marketing
-          </span>
-          <h1 style={{ fontSize: "42px", fontWeight: 400, letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: "16px" }}>
-            <span style={{ color: "#E6EDF5" }}>Signal from </span>
-            <span style={{ color: "#2F80FF", fontWeight: 600 }}>noise.</span>
-          </h1>
-          <p style={{ fontSize: "12px", color: "rgba(159,179,200,0.75)", opacity: 0.7, marginBottom: "12px" }}>
-            Signal extraction for structured settlement and legal data.
-          </p>
-          <p style={{ fontSize: "15px", fontWeight: 400, lineHeight: 1.6, color: "#9FB3C8", maxWidth: "480px" }}>
-            We extract and qualify high-intent prospects at the source. Delivering structured opportunities to operators who convert them.
-          </p>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", marginTop: "32px" }}>
-            <a
-              href="#contact"
-              style={{
-                background: "#2F80FF",
-                color: "white",
-                fontSize: "13px",
-                fontWeight: 600,
-                padding: "12px 26px",
-                borderRadius: "3px",
-                textDecoration: "none",
-              }}
-            >
-              Start a conversation
-            </a>
-            <a
-              href="#methodology"
-              style={{
-                border: "1px solid #2F80FF",
-                color: "#2F80FF",
-                fontSize: "13px",
-                fontWeight: 600,
-                padding: "12px 26px",
-                borderRadius: "3px",
-                textDecoration: "none",
-                background: "none",
-              }}
-            >
-              View methodology
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+const VERTICALS = [
+  { title: "Structured settlements", sub: "Plaintiff & annuitant origination", tag: "Core", tagClass: "tag-accent" },
+  { title: "Legal services", sub: "Mass tort & personal injury", tag: "Active", tagClass: "tag-outline" },
+  { title: "Financial services", sub: "Annuity & insurance buyers", tag: "Active", tagClass: "tag-outline" },
+  { title: "Healthcare", sub: "Patient acquisition & referrals", tag: "Exploring", tagClass: "tag-neutral" },
+];
 
-function Metrics() {
-  const stats = [
-    { value: "94%", label: "Qualified lead rate" },
-    { value: "3.2×", label: "Average client ROI" },
-    { value: "48hr", label: "Median delivery time" },
-  ];
-  return (
-    <section style={{ borderBottom: "1px solid #1F3B5B", background: "#0A2540" }}>
-      <div className="es-container">
-        <div className="metrics-grid">
-          {stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className={i > 0 ? "metrics-cell-bordered" : "metrics-cell"}
-              style={{ paddingTop: "32px", paddingBottom: "32px" }}
-            >
-              <div style={{ fontSize: "28px", fontWeight: 600, letterSpacing: "-0.02em", color: "#E6EDF5", marginBottom: "4px" }}>
-                {stat.value}
-              </div>
-              <div style={{ fontSize: "12px", color: "rgba(159,179,200,0.75)" }}>
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Pipeline() {
-  const steps = [
-    { num: "01", title: "Extract", body: "Extract high-intent signals from source data." },
-    { num: "02", title: "Qualify", body: "Every lead verified and scored against your criteria." },
-    { num: "03", title: "Deliver", body: "Delivered to your CRM. No noise. No lag." },
-  ];
-  return (
-    <section id="methodology" style={{ background: "#0A2540", borderBottom: "1px solid #1F3B5B" }}>
-      <div className="es-container">
-        <div style={{ paddingTop: "48px", paddingBottom: "32px" }}>
-          <span style={{ display: "block", fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "rgba(159,179,200,0.75)", marginBottom: "12px" }}>
-            How it works
-          </span>
-          <h2 style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.015em", color: "#E6EDF5" }}>
-            A conversion system, <span style={{ color: "#2F80FF" }}>end-to-end.</span>
-          </h2>
-        </div>
-        <div className="pipeline-grid" style={{ borderTop: "1px solid #1F3B5B" }}>
-          {steps.map((step, i) => (
-            <div
-              key={step.num}
-              className={i > 0 ? "pipeline-cell-bordered" : "pipeline-cell"}
-              style={{ paddingTop: "32px", paddingBottom: "32px" }}
-            >
-              <div style={{ fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "#2F80FF", marginBottom: "16px" }}>
-                {step.num}
-              </div>
-              <div style={{ fontSize: "14px", fontWeight: 700, color: "white", marginBottom: "8px" }}>
-                {step.title}
-              </div>
-              <p style={{ fontSize: "12px", color: "rgba(159,179,200,0.75)", opacity: 0.8, lineHeight: 1.55 }}>
-                {step.body}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function Verticals() {
-  const items = [
-    { title: "Structured settlements", subtitle: "Plaintiff & claimant targeting", tag: "CORE", tagType: "core" as const },
-    { title: "Legal services", subtitle: "Mass tort & personal injury", tag: "ACTIVE", tagType: "active" as const },
-    { title: "Financial services", subtitle: "Annuity & insurance buyers", tag: "ACTIVE", tagType: "active" as const },
-    { title: "Healthcare", subtitle: "Patient acquisition & referrals", tag: "SOON", tagType: "soon" as const },
-  ];
-
-  const tagStyles = {
-    core: { background: "#2F80FF", color: "white", border: "none" },
-    active: { background: "none", color: "#2F80FF", border: "1px solid #2F80FF" },
-    soon: { background: "none", color: "rgba(159,179,200,0.5)", border: "1px solid rgba(47,128,255,0.35)" },
-  };
-
-  return (
-    <section id="verticals" style={{ background: "#113355", borderBottom: "1px solid #1F3B5B" }}>
-      <div className="es-container">
-        <div style={{ paddingTop: "48px", paddingBottom: "32px" }}>
-          <span style={{ display: "block", fontSize: "10px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", color: "rgba(159,179,200,0.75)", marginBottom: "12px" }}>
-            Verticals
-          </span>
-          <h2 style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.015em", color: "#E6EDF5" }}>
-            Built for <span style={{ color: "#2F80FF" }}>high-stakes</span> decision systems.
-          </h2>
-        </div>
-        <div className="verticals-grid" style={{ marginBottom: "48px" }}>
-          {items.map((item) => (
-            <div
-              key={item.title}
-              style={{
-                background: "#0A2540",
-                padding: "24px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <div>
-                <div style={{ fontSize: "13px", fontWeight: 600, color: "white" }}>{item.title}</div>
-                <div style={{ fontSize: "11px", color: "rgba(159,179,200,0.75)", marginTop: "2px" }}>{item.subtitle}</div>
-              </div>
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontWeight: 600,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  padding: "2px 8px",
-                  borderRadius: "2px",
-                  ...tagStyles[item.tagType],
-                }}
-              >
-                {item.tag}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function CTAFooter() {
-  return (
-    <footer id="contact" style={{ background: "#0A2540" }}>
-      <div className="es-container cta-layout" style={{ paddingTop: "64px", paddingBottom: "64px" }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-          <h2 style={{ fontSize: "22px", fontWeight: 700, letterSpacing: "-0.015em", color: "#E6EDF5" }}>
-            Ready to extract the <span style={{ color: "#2F80FF" }}>right signal?</span>
-          </h2>
-          <p style={{ fontSize: "12px", color: "rgba(159,179,200,0.75)" }}>
-            Direct access to verified, high-intent opportunities.
-          </p>
-          <p style={{ fontSize: "12px", color: "rgba(159,179,200,0.55)" }}>
-            <a href="mailto:zach@extractsignal.com" style={{ color: "inherit", textDecoration: "none" }}>
-              zach@extractsignal.com
-            </a>
-          </p>
-        </div>
-        <a
-          href="mailto:zach@extractsignal.com"
-          style={{
-            background: "#2F80FF",
-            color: "white",
-            fontSize: "13px",
-            fontWeight: 600,
-            padding: "13px 28px",
-            borderRadius: "3px",
-            textDecoration: "none",
-            whiteSpace: "nowrap",
-            alignSelf: "center",
-          }}
-        >
-          Let&apos;s talk
-        </a>
-      </div>
-    </footer>
-  );
-}
+const STATS = [
+  { count: "94", suffix: "%", display: "94%", label: "Qualified lead rate" },
+  { count: "3.2", decimals: "1", suffix: "×", display: "3.2×", label: "Average client ROI" },
+  { count: "48", suffix: "hr", display: "48hr", label: "Median delivery time" },
+];
 
 export default function Home() {
   return (
     <>
-      <Nav />
-      <Hero />
-      <Metrics />
-      <Pipeline />
-      <Verticals />
-      <CTAFooter />
+      <Reveals />
+
+      <nav className="nav">
+        <span className="nav-brand brand">
+          <BrandMark />
+          <span className="wm">
+            Extract<b>Signal</b>
+          </span>
+        </span>
+        <a href="#methodology">Methodology</a>
+        <a href="#verticals">Verticals</a>
+        <a href="#contact">Contact</a>
+        <a className="btn btn-primary" href={MAILTO}>
+          Start a conversation
+        </a>
+      </nav>
+
+      <div className="wrap">
+        <HeroZone>
+          <section className="hero">
+            <h1 className="display">
+              <span className="line">The market is noise.</span>{" "}
+              <span className="line">
+                We extract the <span className="accent">signal.</span>
+              </span>
+            </h1>
+            <p className="sub">
+              Whether we boost your signal or parse your hidden message from the noise — growth marketing works
+              both directions. Lead generation, research and market intelligence on one side; advertising, design
+              and advocacy on the other.
+            </p>
+            <div className="row">
+              <a className="btn btn-primary" href={MAILTO}>
+                Start a conversation
+              </a>
+              <a className="btn btn-ghost" href="#methodology">
+                See the methodology
+              </a>
+            </div>
+          </section>
+        </HeroZone>
+
+        <section className="duplex">
+          <div className="dx reveal">
+            <span className="dx-label">RX — receive</span>
+            <h2 className="dx-title">Isolate the signal in the noise.</h2>
+            <p className="dx-copy">
+              Lead generation, research and market intelligence: we pull high-intent prospects and real answers out
+              of the static — verified, scored, and delivered ready to act on.
+            </p>
+          </div>
+          <div className="dx reveal" style={{ "--rd": "0.12s" } as React.CSSProperties}>
+            <span className="dx-label">TX — transmit</span>
+            <h2 className="dx-title">Boost your signal over the noise.</h2>
+            <p className="dx-copy">
+              Advertising, design and advocacy: when it&rsquo;s your message in the band, we raise it above every
+              competing frequency — creative that carries, campaigns that cut through.
+            </p>
+          </div>
+        </section>
+      </div>
+
+      <section className="stats" aria-label="ExtractSignal, by the numbers">
+        <div className="wrap">
+          <div className="grid">
+            {STATS.map((stat, i) => (
+              <div key={stat.label} className="reveal" style={{ "--rd": `${i * 0.12}s` } as React.CSSProperties}>
+                <p className="stat-num" data-count={stat.count} data-decimals={stat.decimals} data-suffix={stat.suffix}>
+                  {stat.display}
+                </p>
+                <p className="stat-label">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <div className="wrap">
+        <section className="features" id="methodology">
+          <span className="kicker reveal">Methodology</span>
+          {METHODOLOGY.map((step) => (
+            <div className="feature reveal" key={step.num}>
+              <p className="f-num">{step.num}</p>
+              <h2 className="f-title">{step.title}</h2>
+              <p className="f-copy">{step.body}</p>
+            </div>
+          ))}
+        </section>
+
+        <section className="split" id="verticals">
+          <div className="split-copy reveal">
+            <span className="kicker">Verticals</span>
+            <h2 className="split-title">Proven where the stakes are highest.</h2>
+            <p className="note">
+              Our first market is structured settlement funding — a heavily regulated transaction where a bad lead
+              costs real money and a good one changes someone&rsquo;s life. A methodology that holds there holds
+              anywhere.
+            </p>
+          </div>
+          <div className="vgrid reveal" style={{ "--rd": "0.15s" } as React.CSSProperties}>
+            {VERTICALS.map((v) => (
+              <div className="vcell" key={v.title}>
+                <div>
+                  <div className="t">{v.title}</div>
+                  <div className="s">{v.sub}</div>
+                </div>
+                <span className={`tag ${v.tagClass}`}>{v.tag}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="quote">
+          <figure className="reveal">
+            <blockquote>
+              &ldquo;A lead is a claim about a person&rsquo;s intent. We treat it like one — sourced, verified, and
+              delivered with provenance.&rdquo;
+            </blockquote>
+            <figcaption>— ExtractSignal operating principles</figcaption>
+          </figure>
+        </section>
+
+        <hr className="rule" />
+
+        <section className="close" id="contact">
+          <h3 className="reveal">Ready to extract the right signal?</h3>
+          <p className="sub reveal">
+            Direct access to verified, high-intent opportunities. Write to us — a principal answers, usually the
+            same day.
+          </p>
+          <div className="row reveal">
+            <a className="btn btn-primary" href={MAILTO}>
+              Email {EMAIL}
+            </a>
+            <a className="btn btn-ghost" href="#methodology">
+              Review the methodology
+            </a>
+          </div>
+        </section>
+
+        <footer>
+          <span>© 2026 ExtractSignal — an SPK Holdings LLC company</span>
+          <a className="mail" href={MAILTO}>
+            {EMAIL}
+          </a>
+        </footer>
+      </div>
     </>
   );
 }

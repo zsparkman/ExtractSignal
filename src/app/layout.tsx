@@ -7,10 +7,25 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+const description =
+  "Growth marketing that works both directions — lead generation, research and market intelligence on one side; advertising, design and advocacy on the other.";
+
 export const metadata: Metadata = {
-  title: "ExtractSignal — Signal from Noise",
-  icons: {
-    icon: "/icon.svg",
+  metadataBase: new URL("https://www.extractsignal.com"),
+  title: "ExtractSignal — Signal from noise",
+  description,
+  icons: { icon: "/icon.svg" },
+  openGraph: {
+    title: "ExtractSignal — Signal from noise",
+    description,
+    url: "https://www.extractsignal.com",
+    siteName: "ExtractSignal",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "ExtractSignal — Signal from noise",
+    description,
   },
 };
 
