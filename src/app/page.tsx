@@ -1,7 +1,7 @@
 import HeroZone from "./hero-zone";
 import Reveals from "./reveals";
 
-const EMAIL = "zach@extractsignal.com";
+const EMAIL = "info@extractsignal.com";
 const MAILTO = `mailto:${EMAIL}`;
 
 function BrandMark() {
@@ -20,7 +20,7 @@ const METHODOLOGY = [
   {
     num: "01",
     title: "Extract at the source",
-    body: "We work upstream of lists and lead exchanges — monitoring primary-source data and isolating the events that indicate someone is preparing to act, before that intent is diluted into a shared list.",
+    body: "We work upstream of lists and lead exchanges — monitoring primary-source data for the events that indicate someone is preparing to act, before that intent is diluted into a shared list.",
   },
   {
     num: "02",
@@ -30,21 +30,29 @@ const METHODOLOGY = [
   {
     num: "03",
     title: "Deliver with provenance",
-    body: "Qualified opportunities arrive in your CRM as structured records, each carrying its source and qualification trail. Delivered once, to one client — no shared lists, no resale.",
+    body: "Qualified opportunities arrive as structured records in your CRM, each carrying its source and qualification trail. Delivered once, to one client.",
   },
 ];
 
+const METHODOLOGY_NOTE =
+  "The same pipeline that surfaces leads surfaces market intelligence: what your prospects are doing before they're prospects.";
+
 const VERTICALS = [
-  { title: "Structured settlements", sub: "Plaintiff & annuitant origination", tag: "Core", tagClass: "tag-accent" },
+  {
+    title: "Structured settlements",
+    sub: "Plaintiff & annuitant origination",
+    tag: "Founding vertical",
+    tagClass: "tag-accent",
+  },
   { title: "Legal services", sub: "Mass tort & personal injury", tag: "Active", tagClass: "tag-outline" },
   { title: "Financial services", sub: "Annuity & insurance buyers", tag: "Active", tagClass: "tag-outline" },
-  { title: "Healthcare", sub: "Patient acquisition & referrals", tag: "Exploring", tagClass: "tag-neutral" },
+  { title: "Healthcare", sub: "Patient acquisition & referrals", tag: "In development", tagClass: "tag-neutral" },
 ];
 
 const STATS = [
-  { count: "94", suffix: "%", display: "94%", label: "Qualified lead rate" },
-  { count: "3.2", decimals: "1", suffix: "×", display: "3.2×", label: "Average client ROI" },
-  { count: "48", suffix: "hr", display: "48hr", label: "Median delivery time" },
+  { display: "1 client", label: "Per lead — sold once, never resold" },
+  { display: "Source-verified", label: "Every record carries its provenance" },
+  { display: "Same-day", label: "Response from a principal" },
 ];
 
 export default function Home() {
@@ -77,9 +85,8 @@ export default function Home() {
               </span>
             </h1>
             <p className="sub">
-              Whether we boost your signal or parse your hidden message from the noise — growth marketing works
-              both directions. Lead generation, research and market intelligence on one side; advertising, design
-              and advocacy on the other.
+              Every market broadcasts intent — most of it drowned out. We work both directions: finding the
+              prospects who are ready to buy from you, and making sure the prospects ready to buy find you first.
             </p>
             <div className="row">
               <a className="btn btn-primary" href={MAILTO}>
@@ -95,18 +102,18 @@ export default function Home() {
         <section className="duplex">
           <div className="dx reveal">
             <span className="dx-label">RX — receive</span>
-            <h2 className="dx-title">Isolate the signal in the noise.</h2>
+            <h2 className="dx-title">Find the buyers hiding in the noise.</h2>
             <p className="dx-copy">
-              Lead generation, research and market intelligence: we pull high-intent prospects and real answers out
-              of the static — verified, scored, and delivered ready to act on.
+              Lead generation, research, and market intelligence. We identify high-intent prospects at the
+              source — verified, scored, and delivered exclusively, ready to act on.
             </p>
           </div>
           <div className="dx reveal" style={{ "--rd": "0.12s" } as React.CSSProperties}>
             <span className="dx-label">TX — transmit</span>
-            <h2 className="dx-title">Boost your signal over the noise.</h2>
+            <h2 className="dx-title">Make sure the buyers find you.</h2>
             <p className="dx-copy">
-              Advertising, design and advocacy: when it&rsquo;s your message in the band, we raise it above every
-              competing frequency — creative that carries, campaigns that cut through.
+              Advertising, design, and advocacy. When it&rsquo;s your message going out, we build creative that
+              carries and campaigns that cut through the competing noise.
             </p>
           </div>
         </section>
@@ -117,9 +124,7 @@ export default function Home() {
           <div className="grid">
             {STATS.map((stat, i) => (
               <div key={stat.label} className="reveal" style={{ "--rd": `${i * 0.12}s` } as React.CSSProperties}>
-                <p className="stat-num" data-count={stat.count} data-decimals={stat.decimals} data-suffix={stat.suffix}>
-                  {stat.display}
-                </p>
+                <p className="stat-num">{stat.display}</p>
                 <p className="stat-label">{stat.label}</p>
               </div>
             ))}
@@ -137,16 +142,20 @@ export default function Home() {
               <p className="f-copy">{step.body}</p>
             </div>
           ))}
+          <div className="feature reveal">
+            <p className="f-num" aria-hidden="true" />
+            <div aria-hidden="true" />
+            <p className="f-copy">{METHODOLOGY_NOTE}</p>
+          </div>
         </section>
 
         <section className="split" id="verticals">
           <div className="split-copy reveal">
             <span className="kicker">Verticals</span>
-            <h2 className="split-title">Proven where the stakes are highest.</h2>
+            <h2 className="split-title">Where we work.</h2>
             <p className="note">
-              Our first market is structured settlement funding — a heavily regulated transaction where a bad lead
-              costs real money and a good one changes someone&rsquo;s life. A methodology that holds there holds
-              anywhere.
+              We started in high-stakes, heavily regulated verticals — where a bad lead costs real money and
+              provenance isn&rsquo;t optional. The discipline that requires is now our standard everywhere.
             </p>
           </div>
           <div className="vgrid reveal" style={{ "--rd": "0.15s" } as React.CSSProperties}>
@@ -175,11 +184,8 @@ export default function Home() {
         <hr className="rule" />
 
         <section className="close" id="contact">
-          <h3 className="reveal">Ready to extract the right signal?</h3>
-          <p className="sub reveal">
-            Direct access to verified, high-intent opportunities. Write to us — a principal answers, usually the
-            same day.
-          </p>
+          <h3 className="reveal">Ready to hear what your market is telling you?</h3>
+          <p className="sub reveal">Write to us — a principal answers, usually the same day.</p>
           <div className="row reveal">
             <a className="btn btn-primary" href={MAILTO}>
               Email {EMAIL}

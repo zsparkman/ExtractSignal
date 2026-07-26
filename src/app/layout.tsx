@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 const description =
-  "Growth marketing that works both directions — lead generation, research and market intelligence on one side; advertising, design and advocacy on the other.";
+  "Performance marketing in both directions: we find the buyers who are ready to act, and we make sure the ready-to-act buyers find you.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.extractsignal.com"),
