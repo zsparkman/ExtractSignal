@@ -39,14 +39,24 @@ const METHODOLOGY_NOTE =
 
 const VERTICALS = [
   {
-    title: "Structured settlements",
-    sub: "Plaintiff & annuitant origination",
+    title: "Leadgen & Research",
+    sub: "Court-sourced datasets & lead origination",
     tag: "Founding vertical",
     tagClass: "tag-accent",
   },
-  { title: "Legal services", sub: "Mass tort & personal injury", tag: "Active", tagClass: "tag-outline" },
-  { title: "Financial services", sub: "Annuity & insurance buyers", tag: "Active", tagClass: "tag-outline" },
-  { title: "Healthcare", sub: "Patient acquisition & referrals", tag: "In development", tagClass: "tag-neutral" },
+  {
+    title: "Political Ads & Compliance",
+    sub: "FCC public files, rate intelligence & LUR monitoring",
+    tag: "Active",
+    tagClass: "tag-outline",
+  },
+  {
+    title: "Platform Monetization",
+    sub: "Yield platforms, dashboards & pricing tools",
+    tag: "Active",
+    tagClass: "tag-outline",
+  },
+  { title: "Workflow Automation", sub: "Parsing pipelines & agent workflows", tag: "Active", tagClass: "tag-outline" },
 ];
 
 const STATS = [
@@ -151,10 +161,10 @@ export default function Home() {
 
         <section className="split" id="verticals">
           <div className="split-copy reveal">
-            <span className="kicker">Verticals</span>
-            <h2 className="split-title">Where we work.</h2>
+            <span className="kicker">Services</span>
+            <h2 className="split-title">What we do.</h2>
             <p className="note">
-              We started in high-stakes, heavily regulated verticals — where a bad lead costs real money and
+              We started in high-stakes, heavily regulated verticals — where a bad number costs real money and
               provenance isn&rsquo;t optional. The discipline that requires is now our standard everywhere.
             </p>
           </div>
